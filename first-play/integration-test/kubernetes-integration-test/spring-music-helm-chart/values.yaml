@@ -1,0 +1,18 @@
+replicaCount: 2
+
+image:
+  repository: xxx.xxx.xxx.xxx/target-repository
+  pullPolicy: IfNotPresent
+  tag: prometheus
+
+imagePullSecret:
+  name: registry-secret
+  registry: yourregistry
+  username: yourusername
+  password: yourpassword
+  enabled: true
+
+ingress:
+  name: test.com
+  enabled: true
+  host: your-host-address

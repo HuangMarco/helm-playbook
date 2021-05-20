@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.ingress.name }}
+  labels:
+    tier: application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.ingress.name }}
+  template:
+    metadata:
+      labels:
+        app: spring-music
+      annotations:
+        stage: training
+        location: virtual
+        metrics.dynatrace.com/scrape: 'true'
+        metrics.dynatrace.com/path: /actuator/prometheus
+        metrics.dynatrace.com/port: '8080'
+    spec:
+      containers:
+      - name: spring-music
+        image: {{ .Values.image.repository}}:{{ .Values.image.tag }}
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: registiry-secret

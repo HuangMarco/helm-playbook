@@ -11,7 +11,7 @@ kubectl create deployment nginx --image=nginx -n test
 kubectl get deployment nginx -n test -o yaml > deployment-nginx.yaml
 # modify the deployment-nginx to add the port information
 
-# ports:
+# ports: 
 # - containerPort: 80
 #   protocol: TCP
 
@@ -30,4 +30,31 @@ kubectl run nginx --image=nginx:1.13.5-alpine\
 
 kubectl expose deployment nginx -n test --port=81 --type=NodePort \
 -o yaml > service-81.yaml
+
+
+```
+
+## flow control
+
+```sh
+# https://helm.sh/docs/chart_template_guide/control_structures/
+#  通过类似如下方式达到激活helm配置或者不激活的效果
+#   {{ if PIPELINE }}
+  # Do something
+#   {{ else if OTHER PIPELINE }}
+  # Do something else
+#   {{ else }}
+  # Default case
+#   {{ end }}
+
+
+{{- with .Values.imagePullSecret }}
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/dockerconfigjson
+metadata:
+  name: {{ .name }}
+data:
+  .dockerconfigjson: {{ template "imagePullSecret" . }}
+{{- end }}  
 ```
