@@ -56,5 +56,10 @@ metadata:
   name: {{ .name }}
 data:
   .dockerconfigjson: {{ template "imagePullSecret" . }}
-{{- end }}  
+{{- end }}
+```
+
+```sh
+# create helm chart via template-values
+helm3 --kubeconfig=/home/marco/kubeconfig install sample-application ./sample-application-helm --set=imagePullSecret.username=test,imagePullSecret.password=testpwd,ingress.host=sample-application.ingress.cluster.gprojectname.cluster.k8s.cn --wait
 ```
